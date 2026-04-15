@@ -1,0 +1,195 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { siteBase } from "../utils/site-base";
+
+const base = siteBase();
+
+/** Map pins: `kind` selects a fixed palette in public/js/explore-map.js (no raw HTML/CSS from data). */
+const exploreMarkers = [
+	{ name: "Villa Sancti Albani (St. Albans, ME)", lat: 44.927, lng: -69.405, kind: "home" },
+	{ name: "Great Moose Lake (area)", lat: 44.951, lng: -69.472, kind: "region" },
+	{ name: "Newport (I-95 & Route 2)", lat: 44.836, lng: -69.274, kind: "region" },
+	{ name: "Belfast", lat: 44.426, lng: -69.007, kind: "region" },
+	{ name: "Bar Harbor", lat: 44.389, lng: -68.204, kind: "region" },
+	{ name: "Bigelow Preserve (west)", lat: 45.139, lng: -70.278, kind: "region" },
+	{ name: "Bangor Airport (BGR)", lat: 44.807, lng: -68.828, kind: "air" },
+	{ name: "Augusta Airport (AUG)", lat: 44.321, lng: -69.797, kind: "air" },
+	{ name: "Gordon's Grog", lat: 44.928, lng: -69.398, kind: "brew" },
+	{ name: "Bryant's Brewing", lat: 44.882, lng: -69.051, kind: "brew" },
+	{ name: "Tattooed Dad Brewing Co.", lat: 44.616, lng: -69.378, kind: "brew" },
+	{ name: "East Outlet Brewing", lat: 45.031, lng: -69.145, kind: "brew" },
+	{ name: "Brickyard Hollow (Skowhegan)", lat: 44.766, lng: -69.719, kind: "brew" },
+	{ name: "Bigelow Brewing Company", lat: 44.769, lng: -69.71, kind: "brew" },
+	{ name: "Penobscot Bay Brewery", lat: 44.636, lng: -68.866, kind: "brew" },
+	{ name: "Two Knights Brewing Company", lat: 45.126, lng: -69.262, kind: "brew" },
+	{ name: "Geaghan Brothers Brewing", lat: 44.816, lng: -68.771, kind: "brew" },
+	{ name: "Bangor Beer", lat: 44.801, lng: -68.777, kind: "brew" },
+	{ name: "Orono Brewing Company", lat: 44.884, lng: -68.672, kind: "brew" },
+	{ name: "Marsh Island Brewing", lat: 44.871, lng: -68.674, kind: "brew" },
+] as const;
+
+const exploreMarkersJson = JSON.stringify(exploreMarkers).replace(/</g, "\\u003c");
+---
+
+<BaseLayout
+	title="Explore"
+	description="Breweries, Belfast, Acadia, Bigelow Preserve, Great Moose Lake, and airports near Villa Sancti Albani in St. Albans, Maine."
+>
+	<link
+		slot="head"
+		rel="stylesheet"
+		href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+		integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+		crossorigin="anonymous"
+	/>
+
+	<div class="content">
+		<h1>Explore the region</h1>
+		<p class="lede">
+			The Albani sits in <strong>St. Albans</strong>, between <strong>Bangor</strong> and <strong>Augusta</strong>. Days here can stay quiet on the land, or wander
+			out toward lakes, breweries, the midcoast, and the mountains.
+		</p>
+
+		<h2>Map</h2>
+		<p>
+			Pins show <strong>St. Albans, ME</strong> (estate location, approximate), Great Moose Lake, a few farther destinations (Belfast, Bar Harbor, Bigelow Preserve), both commercial airports,
+			and the breweries listed below. Driving times on the table are typical ranges from the house; use your map app on the day you travel.
+		</p>
+		<div class="map-wrap">
+			<div id="explore-map"></div>
+			<p class="map-legend">Basemap © OpenStreetMap contributors. Locations are approximate.</p>
+		</div>
+
+		<h2>Great Moose Lake</h2>
+		<p>
+			Very close to St. Albans, <strong>Great Moose Lake</strong> is a practical choice for boating, swimming, and fishing. Public access points and seasonal rules
+			change; check Maine IF&amp;W and local signage before you launch or cast.
+		</p>
+
+		<h2>Breweries</h2>
+		<p>
+			Approximate driving times from <strong>St. Albans, ME</strong>. <strong>Newport</strong> sits where I-95 meets Route 2—many outings to the
+			Bangor–Orono cluster or the Skowhegan–Madison cluster pass through that junction. Times assume ordinary traffic; winter roads or summer construction can add
+			minutes.
+		</p>
+		<div class="brewery-table-wrap">
+			<table class="brewery-table">
+				<thead>
+					<tr>
+						<th scope="col">Brewery</th>
+						<th scope="col">Drive time</th>
+						<th scope="col">Area</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Gordon&apos;s Grog</td>
+						<td>About 5 minutes</td>
+						<td>St. Albans</td>
+					</tr>
+					<tr>
+						<td>Bryant&apos;s Brewing</td>
+						<td>About 10–15 minutes</td>
+						<td>Hartland, west of St. Albans</td>
+					</tr>
+					<tr>
+						<td>Tattooed Dad Brewing Co.</td>
+						<td>About 20–30 minutes</td>
+						<td>Jackson / Thorndike, south</td>
+					</tr>
+					<tr>
+						<td>East Outlet Brewing</td>
+						<td>About 25–35 minutes</td>
+						<td>Cambridge (Ripley Road corridor)</td>
+					</tr>
+					<tr>
+						<td>Brickyard Hollow Brewing Company</td>
+						<td>About 25–35 minutes</td>
+						<td>Madison / Skowhegan</td>
+					</tr>
+					<tr>
+						<td>Bigelow Brewing Company</td>
+						<td>About 25–35 minutes</td>
+						<td>Skowhegan</td>
+					</tr>
+					<tr>
+						<td>Penobscot Bay Brewery</td>
+						<td>About 35–45 minutes</td>
+						<td>Winterport / Frankfort, southeast</td>
+					</tr>
+					<tr>
+						<td>Two Knights Brewing Company</td>
+						<td>About 40–50 minutes</td>
+						<td>Sangerville / north toward Abbot &amp; Parkman</td>
+					</tr>
+					<tr>
+						<td>Geaghan Brothers Brewing Co.</td>
+						<td>About 40–50 minutes</td>
+						<td>Bangor</td>
+					</tr>
+					<tr>
+						<td>Bangor Beer</td>
+						<td>About 40–50 minutes</td>
+						<td>Bangor</td>
+					</tr>
+					<tr>
+						<td>Orono Brewing Company (tasting room)</td>
+						<td>About 45–55 minutes</td>
+						<td>Orono</td>
+					</tr>
+					<tr>
+						<td>Marsh Island Brewing</td>
+						<td>About 45–55 minutes</td>
+						<td>Orono</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<h2>Belfast and hiking</h2>
+		<p>
+			<strong>Belfast</strong> is a rewarding midcoast town for bookshops, the harbor walk, and dinner on the water. For hiking nearby, look to conserved parcels and
+			trail networks on the east side of Penobscot Bay — for example city and land-trust paths around Belfast and connecting footpaths that head inland toward the
+			hills. Conditions and closures change; carry a paper map or downloaded GPX when you leave cell service.
+		</p>
+
+		<h2>Bigelow Preserve</h2>
+		<p>
+			The <strong>Bigelow Preserve</strong> protects a dramatic slice of the western mountains. Long day hikes and peakbagging are possible for prepared groups;
+			weather above treeline can diverge sharply from the forecast in the valley. Treat it as a full-day commitment with food, layers, and lights.
+		</p>
+
+		<h2>Acadia National Park &amp; Bar Harbor</h2>
+		<p>
+			<strong>Acadia</strong> and <strong>Bar Harbor</strong> are a longer coastal drive but a classic Maine pilgrimage: Cadillac views, shore paths, and the
+			villages of Mount Desert Island. In peak season, expect traffic and timed entry rules; visit the National Park Service site before you go.
+		</p>
+
+		<h2>Flying in</h2>
+		<p>
+			<strong>Bangor (BGR)</strong> and <strong>Augusta (AUG)</strong> are the most convenient commercial airports on this axis. <strong>Cape Air</strong> links Boston with both;
+			fares often land around <strong>a hundred dollars</strong> before taxes and bags, depending on the day.
+		</p>
+
+		<h2>Road trips</h2>
+		<p>
+			From <strong>Boston</strong>, plan roughly <strong>four to five hours</strong> by car. From <strong>Portsmouth, New Hampshire</strong>, plan about
+			<strong>three and a half to four and a half hours</strong>, depending on stops and traffic.
+		</p>
+	</div>
+
+	<script
+		src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+		integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+		crossorigin="anonymous"
+		defer></script>
+	<script type="application/json" id="explore-map-data" set:html={exploreMarkersJson}></script>
+	<script defer src={`${base}js/explore-map.js`}></script>
+</BaseLayout>
+
+<style is:global>
+	.albani-marker {
+		background: transparent;
+		border: none;
+	}
+</style>

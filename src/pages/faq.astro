@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { siteBase } from "../utils/site-base";
+
+const base = siteBase();
+---
+
+<BaseLayout title="FAQ" description="Frequently asked questions about reserving Villa Sancti Albani and staying at The Albani.">
+	<div class="content content--narrow">
+		<h1>Frequently asked questions</h1>
+
+		<h2>Is the house ready today</h2>
+		<p>
+			We are in a short launch window. The site is live so friends and family can reserve summer stays early. If your dates are important, reserve with a deposit
+			and we will confirm as soon as the home clears our final checklist.
+		</p>
+
+		<h2>Why a deposit instead of full payment</h2>
+		<p>
+			A deposit keeps the process light while banking, insurance, and local registrations catch up. You still lock in preferred pricing. Final payment is due before
+			check-in according to the agreement we send you.
+		</p>
+
+		<h2>How do I pay</h2>
+		<p>
+			We use <strong>Stripe</strong> for card payments and <strong>Venmo</strong> for guests who prefer it. Both are linked from the
+			<a href={`${base}book`}>Book</a> page. After paying, email us with your dates so we can tie the payment to your stay.
+		</p>
+
+		<h2>Can I change dates later</h2>
+		<p>
+			We want to be fair as plans shift. Exact rules will be spelled out in your confirmation. Until then, reach out by email and we will work with you when
+			calendar space allows.
+		</p>
+
+		<h2>What should I bring</h2>
+		<p>
+			A full packing list will live on the <a href={`${base}house-rules`}>House rules &amp; stay instructions</a> page as we finalize outfitting the kitchen, linens, and
+			outdoor gear.
+		</p>
+
+		<h2>Pets, smoking, events</h2>
+		<p>
+			Policy details are summarized under <a href={`${base}house-rules`}>House rules</a>. If you are planning something larger than a family gathering, ask before you book
+			so we can confirm what the property can support.
+		</p>
+
+		<h2>Where exactly are you</h2>
+		<p>
+			<strong>Central Maine, in St. Albans, ME.</strong> Driving directions and gate access are on <a href={`${base}getting-here`}>Getting here</a>. The
+			<a href={`${base}explore`}>Explore</a> page maps breweries, towns, and trailheads we like.
+		</p>
+	</div>
+</BaseLayout>

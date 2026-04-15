@@ -1,0 +1,78 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getSafeStripePaymentLink, getSafeVenmoProfileUrl } from "../utils/external-links";
+
+const stripeUrl = getSafeStripePaymentLink(import.meta.env.PUBLIC_STRIPE_PAYMENT_LINK);
+const venmoUrl = getSafeVenmoProfileUrl(import.meta.env.PUBLIC_VENMO_USERNAME);
+---
+
+<BaseLayout
+	title="Book"
+	description="Reserve Villa Sancti Albani with a deposit. Early rates and weekly discounts for direct bookings."
+>
+	<div class="content content--narrow">
+		<p class="small-caps">Friends &amp; family presale</p>
+		<h1>Reserve your stay</h1>
+		<p class="lede">
+			We are in a short preparation window before the house is fully live. For now, reservations are secured with a <strong>deposit</strong> through a simple payment
+			link. Final balance and house-ready dates will be confirmed with you directly.
+		</p>
+
+		<hr class="divider" />
+
+		<h2>Rates</h2>
+		<div class="card" style="margin-bottom: var(--space-md);">
+			<p class="price-block">
+				$188 <small>per night, early reservation</small>
+			</p>
+			<p style="margin-bottom: 0;">
+				Compare at <strong>$250</strong> per night standard. Early rate is a twenty-five percent savings. Stays of seven nights or more take an additional ten
+				percent off the nightly rate that applies to your stay.
+			</p>
+		</div>
+
+		<h2>Pay your deposit</h2>
+		<p>
+			Choose the option you prefer. Stripe is best for cards; Venmo works well if that is how you already send funds. After paying, send a quick note with your
+			name and requested dates so we can match your payment.
+		</p>
+
+		<div class="btn-row">
+			{
+				stripeUrl ? (
+					<a class="btn" href={stripeUrl} target="_blank" rel="noopener noreferrer">
+						Pay deposit with Stripe
+					</a>
+				) : (
+					<span class="btn" style="opacity: 0.55; cursor: not-allowed;" title="Set PUBLIC_STRIPE_PAYMENT_LINK in .env">
+						Stripe link (configure in .env)
+					</span>
+				)
+			}
+			{
+				venmoUrl ? (
+					<a class="btn btn--ghost" href={venmoUrl} target="_blank" rel="noopener noreferrer">
+						Pay with Venmo
+					</a>
+				) : (
+					<span class="btn btn--ghost" style="opacity: 0.55; cursor: not-allowed;" title="Set PUBLIC_VENMO_USERNAME in .env">
+						Venmo (configure in .env)
+					</span>
+				)
+			}
+		</div>
+
+		<p>
+			<strong>Email</strong> to confirm dates after payment:
+			<a href="mailto:stay@thealbani.com">stay@thealbani.com</a>
+			— replace this address in the project when your inbox is ready.
+		</p>
+
+		<h2>What happens next</h2>
+		<ul class="list-plain">
+			<li>We acknowledge your deposit and hold your requested dates tentatively.</li>
+			<li>When the home is inspection-ready, we send final paperwork and balance details.</li>
+			<li>Deposit terms (refund windows, rebooking) should match what you share with guests in writing; update this page when those policies are final.</li>
+		</ul>
+	</div>
+</BaseLayout>

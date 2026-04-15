@@ -1,0 +1,85 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { siteBase } from "../utils/site-base";
+
+const base = siteBase();
+---
+
+<BaseLayout
+	title="The Albani"
+	description="Villa Sancti Albani — a refined woodland estate in St. Albans, Maine, between Bangor and Augusta. Book direct for summer stays."
+>
+	<div
+		slot="hero"
+		class="hero"
+		style={`background-image: url('${base}images/PXL_20260408_224509006.PANO.jpg');`}
+	>
+		<div class="hero__inner">
+			<p class="tagline-roman">Villa · Sancti · Albani</p>
+			<h1>Tucked into the woods, a place to slow down</h1>
+			<p class="lede">
+				Stone, fire, and quiet. A gathering place between Bangor and Augusta, with lakes, trails, and the coast within reach.
+			</p>
+			<div class="btn-row">
+				<a class="btn" href={`${base}book`}>Check availability</a>
+				<a class="btn btn--ghost" href={`${base}explore`}>Explore the area</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="content">
+		<p class="lede">
+			The Albani is the destination name for the estate; the residence is <strong>Villa Sancti Albani</strong>. We are opening for summer stays
+			with an early reservation window for friends and family. Lock in preferred rates while we finalize the last details on the ground.
+		</p>
+
+		<hr class="divider" />
+
+		<h2>Location</h2>
+		<p>
+			The property sits between <strong>Bangor</strong> and <strong>Augusta</strong>, along the corridor visitors use for lakes, hiking, and trips toward the
+			midcoast or Acadia.
+		</p>
+		<p>
+			<strong>Great Moose Lake</strong> is minutes away for boating, swimming, and fishing. <strong>Belfast</strong> and the hills around it offer rewarding day
+			hikes; <strong>Bigelow Preserve</strong> carries some of the state&apos;s most dramatic ridgelines. For a longer day, <strong>Acadia National Park</strong> and
+			<strong>Bar Harbor</strong> are within reach by car.
+		</p>
+
+		<h2>Arriving from away</h2>
+		<div class="card-grid">
+			<div class="card">
+				<h3>Airports</h3>
+				<p>
+					Commercial service is available at <strong>Bangor International (BGR)</strong> and <strong>Augusta State (AUG)</strong>. Cape Air connects Boston with
+					both cities; fares are often in the ballpark of <strong>around $100</strong> before bags and taxes, depending on dates and demand.
+				</p>
+			</div>
+			<div class="card">
+				<h3>Driving</h3>
+				<p>
+					Plan on roughly <strong>four to five hours</strong> by car from <strong>Boston, Massachusetts</strong>, and about <strong>three and a half to four and a half
+					hours</strong> from <strong>Portsmouth, New Hampshire</strong>, depending on traffic and stops. Times are estimates; your map app will be most accurate on the day
+					you travel.
+				</p>
+			</div>
+		</div>
+
+		<h2>Early reservations</h2>
+		<p>
+			Standard rate is <strong>$250 per night</strong>. Early supporters who reserve ahead can lock in <strong>$188 per night</strong> (a twenty-five percent
+			discount). Stays of <strong>seven nights or more</strong> receive an additional <strong>ten percent</strong> off the nightly rate that applies to your booking.
+		</p>
+		<div class="btn-row">
+			<a class="btn" href={`${base}book`}>Reserve with a deposit</a>
+		</div>
+
+		<h2>Gallery</h2>
+		<div class="gallery">
+			<img src={`${base}images/IMG_20200704_200855614_HDR.jpg`} alt="Woodland and natural light at The Albani" loading="lazy" width="400" height="220" />
+			<img src={`${base}images/PXL_20230514_234259659.PORTRAIT.ORIGINAL.jpg`} alt="Seasonal view on the estate" loading="lazy" width="400" height="220" />
+			<img src={`${base}images/PXL_20250914_210622621.ACTION_PAN-01.COVER.jpg`} alt="Landscape surrounding the property" loading="lazy" width="400" height="220" />
+			<img src={`${base}images/PXL_20260406_164106703.MP.jpg`} alt="Evening atmosphere at The Albani" loading="lazy" width="400" height="220" />
+		</div>
+	</div>
+</BaseLayout>

@@ -1,0 +1,216 @@
+---
+import { siteBase } from "../utils/site-base";
+
+const base = siteBase();
+const pathname = Astro.url.pathname;
+const norm = (p: string) => p.replace(/\/+$/, "") || "/";
+const isActive = (href: string) => {
+	const p = norm(pathname);
+	const h = norm(href);
+	if (h === norm(base)) return p === h;
+	return p === h || p.startsWith(`${h}/`);
+};
+const links = [
+	{ href: base, label: "Home" },
+	{ href: `${base}book`, label: "Book" },
+	{ href: `${base}explore`, label: "Explore" },
+	{ href: `${base}getting-here`, label: "Getting here" },
+	{ href: `${base}faq`, label: "FAQ" },
+	{ href: `${base}house-rules`, label: "House rules" },
+	{ href: `${base}reviews`, label: "Reviews" },
+];
+---
+
+<header class="site-header">
+	<div class="site-header__inner">
+		<a href={base} class="site-header__brand">
+			<img src={`${base}logo.png`} alt="The Albani" width="140" height="52" loading="eager" />
+		</a>
+		<button type="button" class="site-header__toggle" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+			<span class="visually-hidden">Menu</span>
+			<span class="site-header__toggle-bar" aria-hidden="true"></span>
+		</button>
+		<nav class="site-nav" id="site-nav" data-nav aria-label="Primary">
+			<ul>
+				{
+					links.map(({ href, label }) => (
+						<li>
+							<a href={href} class:list={{ active: isActive(href) }}>
+								{label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+	</div>
+</header>
+
+<style>
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 100;
+		background: rgba(243, 240, 232, 0.92);
+		backdrop-filter: blur(8px);
+		border-bottom: 1px solid var(--color-sand-warm);
+		padding-top: env(safe-area-inset-top, 0px);
+	}
+
+	.site-header__inner {
+		position: relative;
+		max-width: var(--max-content);
+		margin: 0 auto;
+		padding: var(--space-xs) max(var(--space-md), env(safe-area-inset-right)) var(--space-sm)
+			max(var(--space-md), env(safe-area-inset-left));
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-sm);
+	}
+
+	@media (min-width: 56.25rem) {
+		.site-header__inner {
+			padding: var(--space-sm) var(--space-lg);
+		}
+	}
+
+	.site-header__brand {
+		display: flex;
+		align-items: center;
+		text-decoration: none;
+		min-width: 0;
+	}
+
+	.site-header__brand img {
+		display: block;
+		height: 48px;
+		width: auto;
+		max-width: min(42vw, 140px);
+		object-fit: contain;
+	}
+
+	@media (min-width: 48rem) {
+		.site-header__brand img {
+			height: 52px;
+			max-width: 160px;
+		}
+	}
+
+	.site-header__toggle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		min-width: 44px;
+		min-height: 44px;
+		padding: 0;
+		background: none;
+		border: 1px solid var(--color-sand);
+		cursor: pointer;
+		border-radius: 2px;
+	}
+
+	.site-header__toggle-bar {
+		display: block;
+		width: 22px;
+		height: 2px;
+		background: var(--color-forest);
+		box-shadow:
+			0 -6px 0 var(--color-forest),
+			0 6px 0 var(--color-forest);
+	}
+
+	.visually-hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		border: 0;
+	}
+
+	/* Mobile: menu closed by default */
+	.site-nav {
+		display: none;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 100%;
+		background: var(--color-bone);
+		border-bottom: 1px solid var(--color-sand-warm);
+		padding: var(--space-sm) max(var(--space-md), env(safe-area-inset-right)) var(--space-md)
+			max(var(--space-md), env(safe-area-inset-left));
+		max-height: min(75vh, calc(100dvh - 3.5rem));
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.site-nav.is-open {
+		display: block;
+	}
+
+	.site-nav ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0;
+	}
+
+	.site-nav a {
+		font-family: var(--font-display);
+		font-size: 0.72rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		text-decoration: none;
+		color: var(--color-charcoal);
+		padding: 0.7rem 0;
+		min-height: 44px;
+		line-height: 1.2;
+		display: flex;
+		align-items: center;
+	}
+
+	.site-nav a:hover,
+	.site-nav a.active {
+		color: var(--color-forest);
+	}
+
+	@media (min-width: 56.25rem) {
+		.site-header__toggle {
+			display: none;
+		}
+
+		.site-nav {
+			display: block;
+			position: static;
+			background: transparent;
+			border: none;
+			padding: 0;
+			max-height: none;
+			overflow: visible;
+		}
+
+		.site-nav ul {
+			flex-direction: row;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: flex-end;
+			gap: var(--space-xs) var(--space-md);
+		}
+
+		.site-nav a {
+			font-size: 0.68rem;
+			padding: 0;
+			min-height: unset;
+			display: inline;
+		}
+	}
+</style>
+
+<script defer src={`${base}js/site-nav.js`}></script>
