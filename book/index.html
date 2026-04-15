@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Reserve Villa Sancti Albani with a deposit. Early rates and weekly discounts for direct bookings."><link rel="icon" type="image/png" href="/logo.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"><meta name="generator" content="Astro v6.1.5"><title>Book · The Albani</title><link rel="stylesheet" href="/_astro/BaseLayout.BOInhznQ.css"></head> <body> <header class="site-header" data-astro-cid-3ef6ksr2> <div class="site-header__inner" data-astro-cid-3ef6ksr2> <a href="/" class="site-header__brand" data-astro-cid-3ef6ksr2> <img src="/logo.png" alt="The Albani" width="140" height="auto" loading="eager" data-astro-cid-3ef6ksr2> </a> <button type="button" class="site-header__toggle" aria-expanded="false" aria-controls="site-nav" data-nav-toggle data-astro-cid-3ef6ksr2> <span class="visually-hidden" data-astro-cid-3ef6ksr2>Menu</span> <span class="site-header__toggle-bar" data-astro-cid-3ef6ksr2></span> </button> <nav class="site-nav" id="site-nav" data-nav data-astro-cid-3ef6ksr2> <ul data-astro-cid-3ef6ksr2> <li data-astro-cid-3ef6ksr2> <a href="/" data-astro-cid-3ef6ksr2> Home </a> </li><li data-astro-cid-3ef6ksr2> <a href="/book" class="active" data-astro-cid-3ef6ksr2> Book </a> </li><li data-astro-cid-3ef6ksr2> <a href="/explore" data-astro-cid-3ef6ksr2> Explore </a> </li><li data-astro-cid-3ef6ksr2> <a href="/getting-here" data-astro-cid-3ef6ksr2> Getting here </a> </li><li data-astro-cid-3ef6ksr2> <a href="/faq" data-astro-cid-3ef6ksr2> FAQ </a> </li><li data-astro-cid-3ef6ksr2> <a href="/house-rules" data-astro-cid-3ef6ksr2> House rules </a> </li><li data-astro-cid-3ef6ksr2> <a href="/reviews" data-astro-cid-3ef6ksr2> Reviews </a> </li> </ul> </nav> </div> </header>  <script>
+	document.querySelectorAll("[data-nav-toggle]").forEach((btn) => {
+		btn.addEventListener("click", () => {
+			const nav = document.querySelector("[data-nav]");
+			const open = nav?.classList.toggle("is-open");
+			btn.setAttribute("aria-expanded", open ? "true" : "false");
+		});
+	});
+</script>  <main>  <div class="content content--narrow"> <p class="small-caps">Friends &amp; family presale</p> <h1>Reserve your stay</h1> <p class="lede">
+We are in a short preparation window before the house is fully live. For now, reservations are secured with a <strong>deposit</strong> through a simple payment
+			link. Final balance and house-ready dates will be confirmed with you directly.
+</p> <hr class="divider"> <h2>Rates</h2> <div class="card" style="margin-bottom: var(--space-md);"> <p class="price-block">
+$188 <small>per night, early reservation</small> </p> <p style="margin-bottom: 0;">
+Compare at <strong>$250</strong> per night standard. Early rate is a twenty-five percent savings. Stays of seven nights or more take an additional ten
+				percent off the nightly rate that applies to your stay.
+</p> </div> <h2>Pay your deposit</h2> <p>
+Choose the option you prefer. Stripe is best for cards; Venmo works well if that is how you already send funds. After paying, send a quick note with your
+			name and requested dates so we can match your payment.
+</p> <div class="btn-row"> <span class="btn" style="opacity: 0.55; cursor: not-allowed;" title="Set PUBLIC_STRIPE_PAYMENT_LINK in .env">
+Stripe link (configure in .env)
+</span> <span class="btn btn--ghost" style="opacity: 0.55; cursor: not-allowed;" title="Set PUBLIC_VENMO_USERNAME in .env">
+Venmo (configure in .env)
+</span> </div> <p> <strong>Email</strong> to confirm dates after payment:
+<a href="mailto:stay@thealbani.com">stay@thealbani.com</a>
+— replace this address in the project when your inbox is ready.
+</p> <h2>What happens next</h2> <ul class="list-plain"> <li>We acknowledge your deposit and hold your requested dates tentatively.</li> <li>When the home is inspection-ready, we send final paperwork and balance details.</li> <li>Deposit terms (refund windows, rebooking) should match what you share with guests in writing; update this page when those policies are final.</li> </ul> </div>  </main> <footer class="site-footer" data-astro-cid-sz7xmlte> <div class="site-footer__inner" data-astro-cid-sz7xmlte> <div class="site-footer__brand" data-astro-cid-sz7xmlte> <p class="small-caps" data-astro-cid-sz7xmlte>Villa · Sancti · Albani</p> <p data-astro-cid-sz7xmlte>Central Maine · St. Albans</p> </div> <div class="site-footer__links" data-astro-cid-sz7xmlte> <a href="/book" data-astro-cid-sz7xmlte>Reserve</a> <a href="/faq" data-astro-cid-sz7xmlte>FAQ</a> <a href="/house-rules" data-astro-cid-sz7xmlte>House rules</a> </div> <p class="site-footer__copy" data-astro-cid-sz7xmlte>&copy; 2026 The Albani</p> </div> </footer> </body></html>
