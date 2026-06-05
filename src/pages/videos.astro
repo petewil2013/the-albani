@@ -1,0 +1,135 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+/*
+ * Videos page.
+ *
+ * Videos are hosted on an unlisted YouTube channel; URLs are listed below.
+ * To use the privacy-preserving youtube-nocookie embed domain (which the CSP allows),
+ * pass either the 11-character YouTube ID or the full watch / share URL.
+ *
+ * To add a video: append { id, title, caption? } to the `videos` array.
+ */
+
+/** Accept either an 11-char YouTube ID or any YouTube URL; return the ID, or "" if invalid. */
+function parseYouTubeId(s: string): string {
+	const trimmed = s.trim();
+	if (/^[A-Za-z0-9_-]{11}$/.test(trimmed)) return trimmed;
+	try {
+		const u = new URL(trimmed);
+		if (u.hostname === "youtu.be") {
+			const id = u.pathname.replace(/^\//, "");
+			return /^[A-Za-z0-9_-]{11}$/.test(id) ? id : "";
+		}
+		if (u.hostname.endsWith("youtube.com") || u.hostname.endsWith("youtube-nocookie.com")) {
+			const v = u.searchParams.get("v");
+			if (v && /^[A-Za-z0-9_-]{11}$/.test(v)) return v;
+			const m = u.pathname.match(/^\/(?:embed|shorts|v)\/([A-Za-z0-9_-]{11})/);
+			if (m) return m[1];
+		}
+	} catch {
+		/* fallthrough */
+	}
+	return "";
+}
+
+const videos: { id: string; title: string; caption?: string }[] = [
+	// TODO: paste your unlisted YouTube IDs/URLs here. Examples (commented):
+	// { id: "dQw4w9WgXcQ", title: "Sunset on the ridge", caption: "May 2026, looking west toward the Bigelows." },
+	// { id: "https://youtu.be/dQw4w9WgXcQ", title: "Spring lake view from the deck" },
+];
+
+const renderable = videos
+	.map((v) => ({ ...v, _id: parseYouTubeId(v.id) }))
+	.filter((v) => v._id !== "");
+---
+
+<BaseLayout
+	title="Videos"
+	description="Walkthroughs and views of Villa Sancti Albani — the ridge, the deck, the great room, and the surrounding woods."
+>
+	<div class="content content--narrow">
+		<h1>Videos</h1>
+
+		{
+			renderable.length === 0 ? (
+				<>
+					<p class="lede">Video tour coming soon.</p>
+					<p>
+						In the meantime, browse the <a href="/">homepage gallery</a> for stills, or read the <a href="/explore">Explore</a> page for what
+						the surrounding region looks like.
+					</p>
+				</>
+			) : (
+				<>
+					<p class="lede">A few short looks at the property and the views. All videos are unlisted and hosted on YouTube.</p>
+					<ul class="video-list">
+						{renderable.map((v) => (
+							<li class="video-item">
+								<div class="video-frame">
+									<iframe
+										src={`https://www.youtube-nocookie.com/embed/${v._id}?rel=0&modestbranding=1`}
+										title={v.title}
+										loading="lazy"
+										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+										allowfullscreen
+										referrerpolicy="strict-origin-when-cross-origin"
+									/>
+								</div>
+								<h2 class="video-title">{v.title}</h2>
+								{v.caption && <p class="video-caption">{v.caption}</p>}
+							</li>
+						))}
+					</ul>
+				</>
+			)
+		}
+	</div>
+</BaseLayout>
+
+<style>
+	.video-list {
+		list-style: none;
+		margin: var(--space-lg) 0;
+		padding: 0;
+		display: grid;
+		gap: var(--space-xl);
+	}
+
+	.video-item {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+	}
+
+	.video-frame {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		background: var(--color-forest-deep);
+		border: 1px solid var(--color-sand-warm);
+		overflow: hidden;
+	}
+
+	.video-frame iframe {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		border: 0;
+	}
+
+	.video-title {
+		font-family: var(--font-display);
+		font-size: 1rem;
+		letter-spacing: 0.1em;
+		margin: 0;
+		color: var(--color-forest-deep);
+	}
+
+	.video-caption {
+		font-size: 0.95rem;
+		color: var(--color-charcoal);
+		margin: 0;
+	}
+</style>

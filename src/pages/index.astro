@@ -3,22 +3,72 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { siteBase } from "../utils/site-base";
 
 const base = siteBase();
+
+const heroImg = "IMG_20260528_123611_1.jpg";
+const gallery: { src: string; alt: string }[] = [
+	{ src: "IMG_20260528_123610.jpg", alt: "Golden-hour drone view of the home along the ridge, sunset over the western Maine hills" },
+	{ src: "IMG_20260528_123611.jpg", alt: "The home on its ridge, looking out over rolling forest toward the horizon" },
+	{ src: "IMG_20260528_123611_3.jpg", alt: "Aerial view of the home set in unbroken woodland at sunset" },
+	{ src: "PXL_20210513_142141643.jpg", alt: "Spring lake view framed by the deck pergola, with hills beyond" },
+	{ src: "PXL_20211017_212802601.jpg", alt: "Peak fall foliage and sunset from the deck, with the lake in the distance" },
+	{ src: "IMG_20200704_200855614_HDR.jpg", alt: "Evening fire pit on the granite ledge with the deck of the home in view" },
+	{ src: "PXL_20230730_235231078.MP.jpg", alt: "Candles and a quiet summer evening on the screened porch as the sun sets" },
+	{ src: "PXL_20230604_213210719.jpg", alt: "Interior of the great room: timber beams, dining table, and sliding doors out to the view" },
+	{ src: "PXL_20260406_164106703.MP.jpg", alt: "Wood stove with a fire burning, set on a stone hearth" },
+];
+
+const fullSiteUrl = "https://thealbani.com/";
+
+// JSON-LD: LodgingBusiness structured data so Google can show the property in maps and knowledge panels.
+const jsonLd = {
+	"@context": "https://schema.org",
+	"@type": "LodgingBusiness",
+	name: "Villa Sancti Albani",
+	alternateName: "The Albani",
+	description:
+		"A modern ridge-top home in St. Albans, Maine, between Bangor and Augusta, with sweeping views to the western mountains and Great Moose Lake.",
+	url: fullSiteUrl,
+	image: [`${fullSiteUrl}images/${heroImg}`, `${fullSiteUrl}images/${gallery[0].src}`, `${fullSiteUrl}images/${gallery[4].src}`],
+	address: {
+		"@type": "PostalAddress",
+		addressLocality: "St. Albans",
+		addressRegion: "ME",
+		addressCountry: "US",
+	},
+	geo: {
+		"@type": "GeoCoordinates",
+		latitude: 44.927,
+		longitude: -69.405,
+	},
+	priceRange: "$$",
+	amenityFeature: [
+		{ "@type": "LocationFeatureSpecification", name: "Mountain view" },
+		{ "@type": "LocationFeatureSpecification", name: "Lake view" },
+		{ "@type": "LocationFeatureSpecification", name: "Wood stove" },
+		{ "@type": "LocationFeatureSpecification", name: "Fire pit" },
+		{ "@type": "LocationFeatureSpecification", name: "Covered deck" },
+	],
+};
 ---
 
 <BaseLayout
 	title="The Albani"
-	description="Villa Sancti Albani — a refined woodland estate in St. Albans, Maine, between Bangor and Augusta. Book direct for summer stays."
+	description="Villa Sancti Albani — a modern ridge-top home in St. Albans, Maine, with sweeping mountain views and Great Moose Lake nearby. Book direct for summer stays."
+	ogImage={`images/${heroImg}`}
 >
+	<script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
+
 	<div
 		slot="hero"
 		class="hero"
-		style={`background-image: url('${base}images/PXL_20260408_224509006.PANO.jpg');`}
+		style={`background-image: url('${base}images/${encodeURIComponent(heroImg)}');`}
 	>
 		<div class="hero__inner">
 			<p class="tagline-roman">Villa · Sancti · Albani</p>
-			<h1>Tucked into the woods, a place to slow down</h1>
+			<h1>A modern home on a Maine ridge, with sunsets that go for miles</h1>
 			<p class="lede">
-				Stone, fire, and quiet. A gathering place between Bangor and Augusta, with lakes, trails, and the coast within reach.
+				High above the central Maine woods, with the western mountains on the horizon and Great Moose Lake just below. Stone, fire, and quiet — between
+				Bangor and Augusta, an hour from the coast.
 			</p>
 			<div class="btn-row">
 				<a class="btn" href={`${base}book`}>Check availability</a>
@@ -35,15 +85,18 @@ const base = siteBase();
 
 		<hr class="divider" />
 
-		<h2>Location</h2>
+		<h2>The view</h2>
 		<p>
-			The property sits between <strong>Bangor</strong> and <strong>Augusta</strong>, along the corridor visitors use for lakes, hiking, and trips toward the
-			midcoast or Acadia.
+			The home sits on a high ridge in <strong>St. Albans, Maine</strong>, with a long open view to the west. Sunsets carry across rolling
+			forest to the distant peaks of the Bigelow range. <strong>Great Moose Lake</strong> sits below, minutes away by car for boating, swimming, and
+			fishing. Stand on the deck or beside the fire pit and the land just keeps opening up.
 		</p>
+
+		<h2>The setting</h2>
 		<p>
-			<strong>Great Moose Lake</strong> is minutes away for boating, swimming, and fishing. <strong>Belfast</strong> and the hills around it offer rewarding day
-			hikes; <strong>Bigelow Preserve</strong> carries some of the state&apos;s most dramatic ridgelines. For a longer day, <strong>Acadia National Park</strong> and
-			<strong>Bar Harbor</strong> are within reach by car.
+			Between <strong>Bangor</strong> and <strong>Augusta</strong>, along the corridor visitors use for lakes, hiking, and trips toward the
+			midcoast or Acadia. <strong>Belfast</strong> and the hills around it offer rewarding day hikes; <strong>Bigelow Preserve</strong> carries some of the
+			state&apos;s most dramatic ridgelines. For a longer day, <strong>Acadia National Park</strong> and <strong>Bar Harbor</strong> are within reach by car.
 		</p>
 
 		<h2>Arriving from away</h2>
@@ -51,19 +104,22 @@ const base = siteBase();
 			<div class="card">
 				<h3>Airports</h3>
 				<p>
-					Commercial service is available at <strong>Bangor International (BGR)</strong> and <strong>Augusta State (AUG)</strong>. Cape Air connects Boston with
-					both cities; fares are often in the ballpark of <strong>around $100</strong> before bags and taxes, depending on dates and demand.
+					Commercial service at <strong>Bangor International (BGR)</strong> and <strong>Augusta State (AUG)</strong>. Cape Air connects Boston with both
+					cities; fares often land around <strong>$100</strong> before bags and taxes, depending on dates and demand.
 				</p>
 			</div>
 			<div class="card">
 				<h3>Driving</h3>
 				<p>
-					Plan on roughly <strong>four to five hours</strong> by car from <strong>Boston, Massachusetts</strong>, and about <strong>three and a half to four and a half
-					hours</strong> from <strong>Portsmouth, New Hampshire</strong>, depending on traffic and stops. Times are estimates; your map app will be most accurate on the day
-					you travel.
+					Plan on roughly <strong>four to five hours</strong> by car from <strong>Boston, Massachusetts</strong>, and about
+					<strong>three and a half to four and a half hours</strong> from <strong>Portsmouth, New Hampshire</strong>, depending on traffic and stops.
 				</p>
 			</div>
 		</div>
+		<p>
+			Read the full <a href={`${base}getting-here`}>Getting here</a> guide before you go — the final-approach map matters; some navigation apps
+			will try to send you down a road that no longer goes through.
+		</p>
 
 		<h2>Early reservations</h2>
 		<p>
@@ -76,10 +132,26 @@ const base = siteBase();
 
 		<h2>Gallery</h2>
 		<div class="gallery">
-			<img src={`${base}images/IMG_20200704_200855614_HDR.jpg`} alt="Woodland and natural light at The Albani" loading="lazy" width="400" height="220" />
-			<img src={`${base}images/PXL_20230514_234259659.PORTRAIT.ORIGINAL.jpg`} alt="Seasonal view on the estate" loading="lazy" width="400" height="220" />
-			<img src={`${base}images/PXL_20250914_210622621.ACTION_PAN-01.COVER.jpg`} alt="Landscape surrounding the property" loading="lazy" width="400" height="220" />
-			<img src={`${base}images/PXL_20260406_164106703.MP.jpg`} alt="Evening atmosphere at The Albani" loading="lazy" width="400" height="220" />
+			{
+				gallery.map((img) => (
+					<img
+						src={`${base}images/${encodeURIComponent(img.src)}`}
+						alt={img.alt}
+						loading="lazy"
+						decoding="async"
+						width="400"
+						height="240"
+					/>
+				))
+			}
 		</div>
+
+		<hr class="divider" />
+
+		<h2>Stay in the loop</h2>
+		<p>
+			Summer dates fill quickly. Email <a href="mailto:stay@thealbani.com?subject=Tell%20me%20when%20dates%20open">stay@thealbani.com</a>
+			with the subject <strong>Tell me when dates open</strong> and we&apos;ll write back as soon as the calendar is live.
+		</p>
 	</div>
 </BaseLayout>

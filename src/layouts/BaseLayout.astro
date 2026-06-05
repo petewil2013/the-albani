@@ -8,11 +8,24 @@ interface Props {
 	title: string;
 	description?: string;
 	heroImage?: string;
+	/** Path under public/ for the social-share image, e.g. "images/foo.jpg". Resolved against siteBase + site. */
+	ogImage?: string;
+	/** When true, emit robots: noindex,nofollow,noarchive. For private/gated pages. */
+	noindex?: boolean;
 }
 
-const { title, description = "The Albani — Villa Sancti Albani. A refined woodland estate between Bangor and Augusta, Maine.", heroImage } = Astro.props;
+const {
+	title,
+	description = "The Albani — Villa Sancti Albani. A modern ridge-top home in St. Albans, Maine, with sweeping mountain views and a lake nearby.",
+	ogImage,
+	noindex = false,
+} = Astro.props;
 const fullTitle = title === "The Albani" ? title : `${title} · The Albani`;
 const base = siteBase();
+
+const SITE = "https://thealbani.com";
+const canonical = new URL(Astro.url.pathname, SITE).toString();
+const ogImageUrl = ogImage ? new URL(`${base}${ogImage}`.replace(/\/{2,}/g, "/"), SITE).toString() : `${SITE}/logo.png`;
 ---
 
 <!doctype html>
@@ -24,9 +37,11 @@ const base = siteBase();
 		<meta name="permissions-policy" content="camera=(), microphone=(), geolocation=()" />
 		<meta
 			http-equiv="Content-Security-Policy"
-			content="default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://*.tile.openstreetmap.org https://fonts.googleapis.com https://fonts.gstatic.com; form-action 'self' https://buy.stripe.com https://checkout.stripe.com https://pay.stripe.com https://payments.stripe.com https://billing.stripe.com https://invoice.stripe.com https://donate.stripe.com https://stripe.com https://js.stripe.com https://hooks.stripe.com https://account.venmo.com;"
+			content="default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://*.tile.openstreetmap.org https://fonts.googleapis.com https://fonts.gstatic.com; frame-src https://www.youtube-nocookie.com https://www.youtube.com; form-action 'self' https://buy.stripe.com https://checkout.stripe.com https://pay.stripe.com https://payments.stripe.com https://billing.stripe.com https://invoice.stripe.com https://donate.stripe.com https://stripe.com https://js.stripe.com https://hooks.stripe.com https://account.venmo.com;"
 		/>
 		<meta name="description" content={description} />
+		{noindex && <meta name="robots" content="noindex,nofollow,noarchive" />}
+		<link rel="canonical" href={canonical} />
 		<link rel="icon" type="image/png" href={`${base}logo.png`} />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -34,6 +49,21 @@ const base = siteBase();
 			href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
 			rel="stylesheet"
 		/>
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="The Albani" />
+		<meta property="og:title" content={fullTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={ogImageUrl} />
+		<meta property="og:locale" content="en_US" />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={fullTitle} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
+
+		<meta name="theme-color" content="#1e2b25" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{fullTitle}</title>
 		<slot name="head" />

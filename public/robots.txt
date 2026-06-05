@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /stay-tips
+Disallow: /stay-tips/
+
+Sitemap: https://thealbani.com/sitemap.xml

@@ -1,28 +1,137 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { siteBase } from "../utils/site-base";
+
+const base = siteBase();
 ---
 
 <BaseLayout
 	title="Getting here"
-	description="Driving directions to Villa Sancti Albani in central Maine (St. Albans, ME), and gate access."
+	description="Driving directions and final-approach map for Villa Sancti Albani in central Maine (St. Albans, ME). Don't trust Google for the last mile."
 >
 	<div class="content content--narrow">
 		<h1>Getting here</h1>
 		<p class="lede">
-			The estate is in <strong>central Maine</strong>, in <strong>St. Albans, ME</strong>. Cellular coverage can be patchy on rural roads; consider saving these notes
-			offline before you leave Bangor or Augusta. Exact routing and the property address are shared when your stay is confirmed.
+			The estate is in <strong>central Maine</strong>, in <strong>St. Albans, ME</strong>. Cellular coverage can be patchy on rural roads; save these
+			notes offline before you leave Bangor or Augusta. The exact address is shared when your stay is confirmed.
 		</p>
 
 		<h2>From Bangor or Augusta</h2>
 		<p>
-			Both cities are the main commercial hubs along this corridor. From either direction, follow your map app to <strong>St. Albans</strong> using the details we
-			send you, then follow the final approach notes below. Stick to paved public roads unless you have been told otherwise; some navigation apps suggest seasonal or
-			private tracks in rural Maine.
+			Both cities are the main commercial hubs along this corridor. From either direction, follow your map app to <strong>St. Albans</strong> using the
+			details we send you, then read the <strong>Final approach</strong> below carefully. Stick to paved public roads unless you have been told
+			otherwise; rural Maine navigation will sometimes suggest seasonal or private tracks.
 		</p>
 
-		<h2>Final approach</h2>
+		<h2>Final approach — please read</h2>
+		<p>
+			<strong>Do not let Google route you down Bigelow Rd. out of Saint Albans.</strong> Continue on <strong>Rte. 152</strong> for
+			<strong>4.1 miles</strong> past the Bigelow Rd. turn, then take a <strong>left onto Bryant Rd.</strong> It <em>is</em> a through road, even
+			if Google thinks it isn&apos;t.
+		</p>
+
+		<figure class="approach-map">
+			<svg
+				viewBox="0 0 720 480"
+				role="img"
+				aria-labelledby="approach-map-title approach-map-desc"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<title id="approach-map-title">Final approach diagram</title>
+				<desc id="approach-map-desc">
+					From Saint Albans, do not take Bigelow Road. Continue 4.1 miles on Route 152 and take a left onto Bryant Road to reach the
+					property.
+				</desc>
+
+				<defs>
+					<marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+						<path d="M 0 0 L 10 5 L 0 10 z" fill="#2a3d34"></path>
+					</marker>
+					<marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+						<path d="M 0 0 L 10 5 L 0 10 z" fill="#9c2a1f"></path>
+					</marker>
+				</defs>
+
+				<rect x="0" y="0" width="720" height="480" fill="#f3f0e8"></rect>
+
+				<g opacity="0.18">
+					{Array.from({ length: 17 }).map((_, i) => (
+						<line x1={i * 45} y1="0" x2={i * 45} y2="480" stroke="#b8a57e" stroke-width="0.5"></line>
+					))}
+					{Array.from({ length: 11 }).map((_, i) => (
+						<line x1="0" y1={i * 48} x2="720" y2={i * 48} stroke="#b8a57e" stroke-width="0.5"></line>
+					))}
+				</g>
+
+				<g font-family="Cinzel, serif" font-size="11" letter-spacing="2" fill="#2c2a28">
+					<text x="660" y="30" text-anchor="middle">N</text>
+					<line x1="660" y1="38" x2="660" y2="68" stroke="#2c2a28" stroke-width="1.5" marker-end="url(#arrow-green)"></line>
+				</g>
+
+				<g stroke="#c9b896" stroke-width="14" fill="none" opacity="0.35" stroke-linecap="round">
+					<path d="M 60 380 Q 180 340 240 330"></path>
+					<path d="M 580 110 Q 640 200 660 270"></path>
+				</g>
+
+				<g stroke="#2c2a28" stroke-width="5" fill="none" stroke-linecap="round">
+					<path d="M 60 380 L 240 330 L 360 290 L 520 230"></path>
+				</g>
+				<text x="160" y="350" font-family="Libre Baskerville, serif" font-size="13" fill="#2c2a28" font-weight="700">Rte. 152</text>
+
+				<g stroke="#9c2a1f" stroke-width="4" stroke-dasharray="8 6" fill="none" stroke-linecap="round" opacity="0.85">
+					<path d="M 260 322 L 280 220 L 250 130"></path>
+				</g>
+				<text x="190" y="180" font-family="Libre Baskerville, serif" font-size="13" fill="#9c2a1f" font-weight="700">Bigelow Rd.</text>
+				<text x="190" y="200" font-family="Libre Baskerville, serif" font-size="11" fill="#9c2a1f" font-style="italic">(do not take)</text>
+
+				<g transform="translate(265, 318)">
+					<circle r="14" fill="#fff" stroke="#9c2a1f" stroke-width="3"></circle>
+					<path d="M -7 -7 L 7 7 M 7 -7 L -7 7" stroke="#9c2a1f" stroke-width="3" stroke-linecap="round"></path>
+				</g>
+
+				<g stroke="#2a3d34" stroke-width="5" fill="none" stroke-linecap="round">
+					<path d="M 520 230 L 540 160 L 590 100" marker-end="url(#arrow-green)"></path>
+				</g>
+				<text x="540" y="195" font-family="Libre Baskerville, serif" font-size="13" fill="#2a3d34" font-weight="700">Bryant Rd.</text>
+				<text x="540" y="213" font-family="Libre Baskerville, serif" font-size="11" fill="#2a3d34" font-style="italic">left after 4.1 mi</text>
+
+				<g>
+					<circle cx="60" cy="380" r="9" fill="#6b5340" stroke="#f3f0e8" stroke-width="3"></circle>
+					<text x="60" y="410" text-anchor="middle" font-family="Cinzel, serif" font-size="11" letter-spacing="2" fill="#2c2a28">
+						SAINT ALBANS
+					</text>
+				</g>
+
+				<g>
+					<path d="M 590 100 L 583 88 L 597 88 Z" fill="#2a3d34" stroke="#f3f0e8" stroke-width="2"></path>
+					<circle cx="590" cy="100" r="4" fill="#f3f0e8"></circle>
+					<text x="590" y="75" text-anchor="middle" font-family="Cinzel, serif" font-size="11" letter-spacing="2" fill="#2a3d34" font-weight="700">
+						THE ALBANI
+					</text>
+				</g>
+
+				<g transform="translate(380, 308) rotate(-18)">
+					<rect x="-26" y="-12" width="52" height="20" fill="#f3f0e8" stroke="#2c2a28" stroke-width="0.75" rx="2"></rect>
+					<text x="0" y="2" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="11" fill="#2c2a28" font-weight="700">4.1 mi</text>
+				</g>
+
+				<g transform="translate(20, 440)" font-family="Libre Baskerville, serif" font-size="10" fill="#2c2a28">
+					<rect x="0" y="-12" width="14" height="3" fill="#2a3d34"></rect>
+					<text x="20" y="-7">Drive this</text>
+					<rect x="120" y="-12" width="14" height="3" fill="#9c2a1f"></rect>
+					<text x="140" y="-7">Avoid (Bigelow Rd.)</text>
+					<text x="280" y="-7" font-style="italic">Diagram, not to scale.</text>
+				</g>
+			</svg>
+			<figcaption>
+				Final approach. Stay on Rte. 152 past Bigelow Rd., then left onto Bryant Rd. after 4.1 miles. The original printable copy is also
+				available as a <a href={`${base}getting-here/final-approach.pdf`} target="_blank" rel="noopener">PDF download</a>.
+			</figcaption>
+		</figure>
+
+		<h2>At the property</h2>
 		<ul class="list-plain">
-			<li>Slow down as you near the mailbox or posted address numbers; the driveway may be easy to miss at night.</li>
+			<li>Slow down as you near the mailbox or posted address numbers; the driveway is easy to miss at night.</li>
 			<li>
 				<strong>Gate</strong>: [Add your combination, keypad steps, or fob instructions here. Example: enter code at the silver keypad, wait for the tone, then
 				push the gate gently.]
@@ -36,10 +145,34 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 			notes.]
 		</p>
 
-		<p>
+		<div class="btn-row">
 			<a class="btn" href="https://www.google.com/maps/search/?api=1&query=St+Albans%2C+ME" target="_blank" rel="noopener noreferrer">
 				Open St. Albans, ME in Google Maps
 			</a>
-		</p>
+			<a class="btn btn--ghost" href={`${base}getting-here/final-approach.pdf`} target="_blank" rel="noopener">
+				Download printable map (PDF)
+			</a>
+		</div>
 	</div>
 </BaseLayout>
+
+<style>
+	.approach-map {
+		margin: var(--space-lg) 0;
+	}
+
+	.approach-map svg {
+		display: block;
+		width: 100%;
+		height: auto;
+		border: 1px solid var(--color-sand-warm);
+		background: var(--color-bone);
+	}
+
+	.approach-map figcaption {
+		font-size: 0.9rem;
+		color: var(--color-charcoal);
+		margin-top: var(--space-sm);
+		font-style: italic;
+	}
+</style>
