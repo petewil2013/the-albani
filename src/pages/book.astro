@@ -1,78 +1,71 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getSafeStripePaymentLink, getSafeVenmoProfileUrl } from "../utils/external-links";
+import OwnerRezWidget from "../components/OwnerRezWidget.astro";
+import { getOwnerRezWidgetConfig } from "../utils/ownerrez-widget";
 
-const stripeUrl = getSafeStripePaymentLink(import.meta.env.PUBLIC_STRIPE_PAYMENT_LINK);
-const venmoUrl = getSafeVenmoProfileUrl(import.meta.env.PUBLIC_VENMO_USERNAME);
+const orWidget = getOwnerRezWidgetConfig(
+	import.meta.env.PUBLIC_OWNERREZ_WIDGET_ID,
+	import.meta.env.PUBLIC_OWNERREZ_PROPERTY_ID,
+	import.meta.env.PUBLIC_OWNERREZ_WIDGET_TYPE,
+);
 ---
 
 <BaseLayout
 	title="Book"
-	description="Reserve Villa Sancti Albani with a deposit. Early rates and weekly discounts for direct bookings."
+	description="Check availability and reserve Villa Sancti Albani — a ridge-top home in St. Albans, Maine. Sleeps 4 comfortably, 6 max. Book direct."
 >
 	<div class="content content--narrow">
-		<p class="small-caps">Friends &amp; family presale</p>
+		<p class="small-caps">Direct booking</p>
 		<h1>Reserve your stay</h1>
 		<p class="lede">
-			We are in a short preparation window before the house is fully live. For now, reservations are secured with a <strong>deposit</strong> through a simple payment
-			link. Final balance and house-ready dates will be confirmed with you directly.
+			Check live availability, see your quote, and book securely through OwnerRez. Villa Sancti Albani is a <strong>3-bedroom</strong> ridge-top home that
+			<strong>comfortably sleeps 4</strong> (1 king, 2 twins) and can accommodate <strong>up to 6</strong> with air mattresses.
 		</p>
+
+		<h2>Check availability &amp; book</h2>
+		<p>Select your dates and number of guests below. You'll see a live quote before confirming.</p>
+
+		<OwnerRezWidget
+			widgetId={import.meta.env.PUBLIC_OWNERREZ_WIDGET_ID}
+			propertyId={import.meta.env.PUBLIC_OWNERREZ_PROPERTY_ID}
+			widgetType={import.meta.env.PUBLIC_OWNERREZ_WIDGET_TYPE}
+		/>
+
+		{
+			!orWidget && (
+				<p class="small-note">
+					<strong>Site owner:</strong> paste your widget IDs into <code>.env</code> using <code>OWNERREZ_SETUP.md</code>, then rebuild and deploy.
+				</p>
+			)
+		}
 
 		<hr class="divider" />
 
 		<h2>Rates</h2>
 		<div class="card" style="margin-bottom: var(--space-md);">
 			<p class="price-block">
-				$188 <small>per night, early reservation</small>
+				from $235 <small>per night</small>
 			</p>
 			<p style="margin-bottom: 0;">
-				Compare at <strong>$250</strong> per night standard. Early rate is a twenty-five percent savings. Stays of seven nights or more take an additional ten
-				percent off the nightly rate that applies to your stay.
+				Peak summer weekends run <strong>$265–$285</strong>; shoulder season <strong>$235–$255</strong>. Stays of <strong>seven nights or more</strong> receive a
+				<strong>10% weekly discount</strong>. Cleaning fee and taxes are shown in your quote before you pay.
 			</p>
 		</div>
 
-		<h2>Pay your deposit</h2>
-		<p>
-			Choose the option you prefer. Stripe is best for cards; Venmo works well if that is how you already send funds. After paying, send a quick note with your
-			name and requested dates so we can match your payment.
-		</p>
-
-		<div class="btn-row">
-			{
-				stripeUrl ? (
-					<a class="btn" href={stripeUrl} target="_blank" rel="noopener noreferrer">
-						Pay deposit with Stripe
-					</a>
-				) : (
-					<span class="btn" style="opacity: 0.55; cursor: not-allowed;" title="Set PUBLIC_STRIPE_PAYMENT_LINK in .env">
-						Stripe link (configure in .env)
-					</span>
-				)
-			}
-			{
-				venmoUrl ? (
-					<a class="btn btn--ghost" href={venmoUrl} target="_blank" rel="noopener noreferrer">
-						Pay with Venmo
-					</a>
-				) : (
-					<span class="btn btn--ghost" style="opacity: 0.55; cursor: not-allowed;" title="Set PUBLIC_VENMO_USERNAME in .env">
-						Venmo (configure in .env)
-					</span>
-				)
-			}
-		</div>
-
-		<p>
-			<strong>Email</strong> to confirm dates after payment:
-			<a href="mailto:stay@thealbani.com">stay@thealbani.com</a>
-			— replace this address in the project when your inbox is ready.
-		</p>
-
-		<h2>What happens next</h2>
+		<h2>What to expect</h2>
 		<ul class="list-plain">
-			<li>We acknowledge your deposit and hold your requested dates tentatively.</li>
-			<li>When the home is inspection-ready, we send final paperwork and balance details.</li>
-			<li>Deposit terms (refund windows, rebooking) should match what you share with guests in writing; update this page when those policies are final.</li>
+			<li><strong>3-night minimum</strong> in peak season (longer on holiday weekends).</li>
+			<li>Ideal for couples, a family of four, or two couples — not large group events.</li>
+			<li>After booking, you'll receive a confirmation email and a guest portal link with check-in details and stay tips.</li>
+			<li>Questions before you book? Email <a href="mailto:stay@thealbani.com">stay@thealbani.com</a>.</li>
 		</ul>
 	</div>
 </BaseLayout>
+
+<style>
+	.small-note {
+		font-size: 0.9rem;
+		color: var(--color-charcoal);
+		margin-top: var(--space-sm);
+	}
+</style>

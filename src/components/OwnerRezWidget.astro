@@ -1,0 +1,54 @@
+---
+import { getOwnerRezWidgetConfig } from "../utils/ownerrez-widget";
+
+interface Props {
+	widgetId?: string;
+	propertyId?: string;
+	widgetType?: string;
+	/** Set false when multiple widgets share one page; load widget.js once at page bottom. */
+	includeScript?: boolean;
+}
+
+const { widgetId, propertyId, widgetType, includeScript = true } = Astro.props;
+
+const config = getOwnerRezWidgetConfig(widgetId, propertyId, widgetType);
+---
+
+{
+	config ? (
+		<>
+			<div class="ownerrez-wrap">
+				<div
+					class="ownerrez-widget"
+					data-widget-type={config.widgetType}
+					data-propertyId={config.propertyId}
+					data-widgetId={config.widgetId}
+				/>
+			</div>
+			{includeScript && <script src="https://app.ownerrez.com/widget.js" defer />}
+		</>
+	) : (
+		<div class="ownerrez-wrap ownerrez-wrap--placeholder card">
+			<p style="margin: 0;">
+				<strong>Widget not configured.</strong> Add OwnerRez IDs to <code>.env</code> (see <code>OWNERREZ_SETUP.md</code>) and rebuild.
+			</p>
+		</div>
+	)
+}
+
+<style>
+	.ownerrez-wrap {
+		margin: var(--space-lg) 0;
+		min-height: 120px;
+	}
+
+	.ownerrez-wrap--placeholder {
+		padding: var(--space-md);
+		font-size: 0.95rem;
+		color: var(--color-charcoal);
+	}
+
+	.ownerrez-wrap--placeholder code {
+		font-size: 0.88em;
+	}
+</style>

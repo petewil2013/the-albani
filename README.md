@@ -9,11 +9,11 @@ npm install
 npm run dev
 ```
 
-## Payments (book page)
+## Booking (OwnerRez)
 
 1. Copy `.env.example` to `.env`.
-2. Create a [Stripe Payment Link](https://stripe.com/docs/payment-links) for your deposit amount and paste it into `PUBLIC_STRIPE_PAYMENT_LINK`.
-3. Set `PUBLIC_VENMO_USERNAME` to your Venmo handle (no `@`).
+2. Follow **[OWNERREZ_SETUP.md](./OWNERREZ_SETUP.md)** to configure rates, rules, and widgets in OwnerRez.
+3. Paste your widget IDs into `.env` and run `npm run build`.
 
 Replace placeholder email addresses in `src/pages` when your inbox is ready.
 

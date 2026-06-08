@@ -1,8 +1,16 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import OwnerRezWidget from "../components/OwnerRezWidget.astro";
 import { siteBase } from "../utils/site-base";
+import { getOwnerRezWidgetConfig } from "../utils/ownerrez-widget";
 
 const base = siteBase();
+
+const calendarWidget = getOwnerRezWidgetConfig(
+	import.meta.env.PUBLIC_OWNERREZ_CALENDAR_WIDGET_ID,
+	import.meta.env.PUBLIC_OWNERREZ_CALENDAR_PROPERTY_ID,
+	import.meta.env.PUBLIC_OWNERREZ_CALENDAR_WIDGET_TYPE,
+);
 
 const heroImg = "IMG_20260528_123611_1.jpg";
 const gallery: { src: string; alt: string }[] = [
@@ -121,13 +129,27 @@ const jsonLd = {
 			will try to send you down a road that no longer goes through.
 		</p>
 
-		<h2>Early reservations</h2>
+		<h2>Availability</h2>
 		<p>
-			Standard rate is <strong>$250 per night</strong>. Early supporters who reserve ahead can lock in <strong>$188 per night</strong> (a twenty-five percent
-			discount). Stays of <strong>seven nights or more</strong> receive an additional <strong>ten percent</strong> off the nightly rate that applies to your booking.
+			Live calendar below — green is open, blocked dates are already reserved. Peak summer from <strong>$265/night</strong>; weekly stays receive a
+			<strong>10% discount</strong>.
 		</p>
+		{
+			calendarWidget ? (
+				<OwnerRezWidget
+					widgetId={import.meta.env.PUBLIC_OWNERREZ_CALENDAR_WIDGET_ID}
+					propertyId={import.meta.env.PUBLIC_OWNERREZ_CALENDAR_PROPERTY_ID}
+					widgetType={import.meta.env.PUBLIC_OWNERREZ_CALENDAR_WIDGET_TYPE}
+					includeScript={true}
+				/>
+			) : (
+				<p>
+					Calendar loading soon. <a href={`${base}book`}>Check availability and book on the reserve page</a>.
+				</p>
+			)
+		}
 		<div class="btn-row">
-			<a class="btn" href={`${base}book`}>Reserve with a deposit</a>
+			<a class="btn" href={`${base}book`}>Reserve your stay</a>
 		</div>
 
 		<h2>Gallery</h2>
